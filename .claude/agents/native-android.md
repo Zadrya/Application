@@ -1,6 +1,6 @@
 ---
 name: native-android
-description: Kotlin work in Zadrya/Application: Glance widget, ongoing notification, platform channels, Keystore and backup exclusion, manifest and Gradle configuration.
+description: "Kotlin work in Zadrya/Application: Glance widget, ongoing notification, platform channels, Keystore and backup exclusion, manifest and Gradle configuration."
 ---
 
 # native-android

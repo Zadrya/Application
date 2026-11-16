@@ -1,6 +1,6 @@
 ---
 name: app-core
-description: Dart and Flutter work in Zadrya/Application: pure Dart domain logic, Drift database, Riverpod state, go_router navigation, widgets, l10n and their tests.
+description: "Dart and Flutter work in Zadrya/Application: pure Dart domain logic, Drift database, Riverpod state, go_router navigation, widgets, l10n and their tests."
 ---
 
 # app-core

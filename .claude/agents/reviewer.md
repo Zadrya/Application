@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Reviews a pull request with a clean context against the Zadrya spec and the standing rules. Use before every merge. It reports objections and never edits code.
+description: "Reviews a pull request with a clean context against the Zadrya spec and the standing rules. Use before every merge. It reports objections and never edits code."
 tools: Read, Grep, Glob, Bash
 ---
 

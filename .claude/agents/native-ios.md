@@ -1,6 +1,6 @@
 ---
 name: native-ios
-description: Swift work in Zadrya/Application: WidgetKit widget, ActivityKit Live Activity, platform channels, Keychain and backup exclusion, Info.plist and iOS build configuration.
+description: "Swift work in Zadrya/Application: WidgetKit widget, ActivityKit Live Activity, platform channels, Keychain and backup exclusion, Info.plist and iOS build configuration."
 ---
 
 # native-ios

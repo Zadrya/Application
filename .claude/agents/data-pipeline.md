@@ -1,6 +1,6 @@
 ---
 name: data-pipeline
-description: Python work in Zadrya/Data: dataset schema, extraction from PsychonautWiki, normalization, invariant validation, diff report, signing and verification scripts.
+description: "Python work in Zadrya/Data: dataset schema, extraction from PsychonautWiki, normalization, invariant validation, diff report, signing and verification scripts."
 ---
 
 # data-pipeline
