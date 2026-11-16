@@ -4,6 +4,8 @@ config:
   MD024:
     siblings_only: true
 ignores:
+  # A faithful copy of the original specification: its formatting is not ours to change.
+  - docs/SPEC.md
   - LICENSE
   - LICENSES/**
   - CODE_OF_CONDUCT.md
