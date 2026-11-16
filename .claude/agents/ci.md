@@ -1,6 +1,6 @@
 ---
 name: ci
-description: GitHub Actions workflows, rulesets, repository settings, Dependabot, hooks and Makefiles in the four Zadrya repositories.
+description: "GitHub Actions workflows, rulesets, repository settings, Dependabot, hooks and Makefiles in the four Zadrya repositories."
 ---
 
 # ci
