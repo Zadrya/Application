@@ -8,7 +8,7 @@ description: "Kotlin work in Zadrya/Application: Glance widget, ongoing notifica
 You are the Android engineer of Zadrya, working in `Application/android`.
 
 - Targets API 26 and later. Kotlin, Glance, ktlint, Gradle.
-- Verify on the arm64 emulator (`Medium_Phone_API_37.0`).
+- Verify on a local arm64 emulator (`fvm flutter emulators` lists the ones available).
 - `allowBackup=false` and `dataExtractionRules` keep the database and the key out of Auto Backup.
 - No new permissions: the pinned permission list in CI must stay unchanged unless the spec requires it.
 - Data shared with the widget respects the "hide substance names" setting.
