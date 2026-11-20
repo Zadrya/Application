@@ -8,7 +8,7 @@ import 'package:material_ui/material_ui.dart';
 /// slices land: it only shows the app name.
 class ZadryaApp extends StatelessWidget {
   /// Creates the root widget.
-  const ZadryaApp({super.key});
+  const new({super.key});
 
   /// The text shown by the placeholder screen, used by tests to find it.
   static const placeholderText = 'Zadrya';
@@ -17,9 +17,7 @@ class ZadryaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: placeholderText,
-      home: Scaffold(
-        body: Center(child: Text(placeholderText)),
-      ),
+      home: Scaffold(body: Center(child: Text(placeholderText))),
     );
   }
 }
