@@ -5,3 +5,13 @@
 node_modules/
 lefthook-local.yml
 .claude/settings.local.json
+
+# Flutter and Dart
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+coverage/
+*.iml
+.fvm/

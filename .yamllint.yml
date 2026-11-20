@@ -2,6 +2,7 @@
 extends: default
 
 ignore: |
+  .dart_tool/
   .fvm/
   build/
   node_modules/
