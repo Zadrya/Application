@@ -11,7 +11,7 @@
 
 # Framework
 flutter                     # SDK
-material_ui                 # Flutter's Material library, published outside the SDK since Flutter 3.47
+material_ui                 # Flutter's Material library, a package outside the SDK, used by flutter create
 flutter_localizations       # SDK, i18n: ARB + gen-l10n
 intl                        # i18n: ARB + gen-l10n
 

@@ -7,10 +7,25 @@ The Zadrya app: a harm reduction journal for iOS and Android, built with Flutter
 ## Commands
 
 - `make setup`: install the git hooks (lefthook), once per clone.
-- `make check`: lint, license metadata and tests. Run before every commit.
-- `make ci`: everything CI runs, including authorship and commitlint. Run before opening a pull request.
+- `make check`: Dart format and analyze, the dependency allowlist, lint, license metadata, script tests, unit and widget tests. Run before every commit.
+- `make ci`: `check` plus the coverage gate, the permission check (builds the Android debug APK), authorship and commitlint. Run before opening a pull request.
+- `make integration-test DEVICE=<id>`: the integration tests on a running emulator or simulator (`fvm flutter devices` lists the ids).
+- `make build-android-debug`, `make build-ios-simulator`, `make build-ios-release`: the builds the CI jobs run (iOS only on macOS with Xcode).
+- `make help` lists every target.
 
-Local tools (Homebrew): `lefthook actionlint yamllint markdownlint-cli2 zizmor reuse shellcheck`, plus Node for commitlint.
+Flutter is pinned in `.fvmrc` and always run through fvm: `fvm flutter ...` and `fvm dart ...`, never a global `flutter`. The Makefile does this by default; CI installs the same version with `tool/install-flutter.sh` and sets `FLUTTER=flutter DART=dart`.
+
+Local tools (Homebrew): `fvm lefthook actionlint yamllint markdownlint-cli2 zizmor reuse shellcheck`, plus Node for commitlint and Android Studio for the Android SDK.
+
+### Running the app locally
+
+There is no Xcode, so locally the app runs only on the Android emulator `Medium_Phone_API_37.0` (arm64):
+
+```sh
+~/Library/Android/sdk/emulator/emulator -avd Medium_Phone_API_37.0 &
+fvm flutter run -d emulator-5554
+make integration-test DEVICE=emulator-5554
+```
 
 ## Rules
 
@@ -28,7 +43,12 @@ Subagents live in `.claude/agents/`: `app-core`, `native-ios`, `native-android`,
 
 ## Gotchas
 
-- There is no Flutter project yet: it is created in Phase 2. Flutter is pinned with `fvm` (always `fvm flutter`, never a global `flutter`).
+- Layout: `lib/core/` for shared code, `lib/features/<feature>/{presentation,application,domain,data}`. The coverage gate (85 %) covers `lib/**/domain/**` and `lib/**/data/**`, and fails on any such file that no test imports.
+- New direct dependencies must be added to `tool/dependencies.allowed` (spec stack and companions only), and new permissions or Info.plist privacy keys to `tool/permissions.allowed`: both are privacy decisions reviewed in the pull request. `android-debug` entries are allowed in the debug manifest only, never in release.
+- Generated platform files under `android/` and `ios/` stay as `flutter create` wrote them (apart from identifiers and minimum OS versions) and are covered by `REUSE.toml`, not by SPDX headers.
+- Flutter 3.50 uses Swift Package Manager, so there is no Podfile. If a plugin ever brings one back, set `platform :ios, '17.0'` in it.
+- When `.fvmrc` changes, add the new version's archives and SHA-256 to `tool/flutter-sdk.lock`, or every CI job fails at "Install Flutter".
+- The CI job names are `lint`, `test` (required checks), `android-build`, `ios-build`, `integration-android` and `integration-ios`.
 - There is no local Xcode: iOS builds and tests run only on GitHub macOS runners (see `docs/adr/0003-ios-verified-in-ci-only.md`).
 - Actions must be pinned by full commit SHA: the organization enforces it and unpinned workflows do not start.
 - The shared scripts in `scripts/` and the base workflows are duplicated in all four Zadrya repositories on purpose, so that each repository can run `make ci` on its own. When you change one, change it in all four.
