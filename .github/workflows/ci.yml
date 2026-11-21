@@ -98,8 +98,8 @@ jobs:
           restore-keys: pub-${{ runner.os }}-
       - name: Install Flutter
         run: tool/install-flutter.sh "$RUNNER_TOOL_CACHE/zadrya-flutter"
-      - name: Build the debug APK
-        run: make build-android-debug
+      - name: Build the debug APK and check its permissions
+        run: make permissions
 
   ios-build:
     name: ios-build

@@ -69,6 +69,53 @@ expect "coverage: a gated file no test loads fails" 1 "$dir" "$coverage" partial
 expect "coverage: a missing lcov.info is an error" 2 "$dir" "$coverage" missing.info 85
 expect "coverage: an invalid minimum is an error" 2 "$dir" "$coverage" high.info 85.5
 
+# --- check-permissions.sh ----------------------------------------------------
+
+permissions="$tool_dir/check-permissions.sh"
+
+manifest() { # <file> <permission...>
+  {
+    echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android">'
+    local name
+    for name in "${@:2}"; do echo "    <uses-permission android:name=\"$name\" />"; done
+    echo '    <application android:label="Zadrya" />'
+    echo '</manifest>'
+  } >"$1"
+}
+plist() { # <file> <key...>
+  {
+    echo '<plist version="1.0"><dict>'
+    local key
+    for key in "${@:2}"; do echo "<key>$key</key><string>why</string>"; done
+    echo '<key>CFBundleName</key><string>zadrya</string>'
+    echo '</dict></plist>'
+  } >"$1"
+}
+
+dir="$(fresh permissions)"
+mkdir -p "$dir/tool"
+cp "$tool_dir/permissions.allowed" "$dir/tool/"
+manifest "$dir/debug.xml" android.permission.INTERNET io.github.zadrya.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+manifest "$dir/release.xml" io.github.zadrya.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+plist "$dir/Info.plist"
+expect "permissions: the current allowlist passes" 0 "$dir" "$permissions" debug.xml release.xml Info.plist
+
+manifest "$dir/camera.xml" android.permission.INTERNET android.permission.CAMERA
+expect "permissions: an added Android permission fails" 1 "$dir" "$permissions" camera.xml release.xml Info.plist
+manifest "$dir/release-internet.xml" android.permission.INTERNET
+expect "permissions: a debug-only permission in release fails" 1 "$dir" "$permissions" debug.xml release-internet.xml Info.plist
+cat >"$dir/multiline.xml" <<'XML'
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission-sdk-23
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:maxSdkVersion="34" />
+</manifest>
+XML
+expect "permissions: a multi-line uses-permission-sdk-23 fails" 1 "$dir" "$permissions" debug.xml multiline.xml Info.plist
+plist "$dir/camera.plist" NSCameraUsageDescription
+expect "permissions: an added Info.plist privacy key fails" 1 "$dir" "$permissions" debug.xml release.xml camera.plist
+expect "permissions: a missing manifest is an error" 2 "$dir" "$permissions" missing.xml release.xml Info.plist
+
 if ((failures > 0)); then
   echo "$failures tool test(s) failed"
   exit 1

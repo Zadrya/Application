@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Permissions and privacy keys the app may declare, checked by
+# tool/check-permissions.sh against the merged Android manifests and
+# ios/Runner/Info.plist. Any addition fails CI (docs/SPEC.md, "Non-functional
+# requirements": no location, contacts, camera or microphone permissions, no
+# network except the optional signed dataset download).
+#
+# Format: <scope> <name>  # why it is needed
+#   android        allowed in every Android build (debug and release)
+#   android-debug  allowed only in the debug build, never in release
+#   ios            an Info.plist privacy key (NS*UsageDescription*)
+#
+# Only what Flutter itself requires is listed today. iOS needs no privacy key.
+
+# The Flutter tool talks to a debug app over a local socket (hot reload,
+# breakpoints, integration tests). Declared by Flutter's template in
+# android/app/src/debug/AndroidManifest.xml, absent from release.
+android-debug android.permission.INTERNET
+
+# Added by androidx.core, a dependency of the Flutter embedding: a
+# signature-level permission of the app itself that protects its own
+# non-exported dynamic broadcast receivers. It grants no access to anything.
+android io.github.zadrya.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION

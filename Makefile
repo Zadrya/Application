@@ -14,10 +14,11 @@ DART ?= fvm dart
 COVERAGE_MIN ?= 85
 # Device for integration tests, empty for the only one connected.
 DEVICE ?=
+MERGED_MANIFESTS := build/app/intermediates/merged_manifest
 COMMITLINT := npx --yes --package @commitlint/cli@21.2.4 -- commitlint
 
 .PHONY: help setup check ci lint format-check analyze licenses test test-scripts test-flutter coverage \
-	integration-test build-android-debug build-ios-simulator build-ios-release \
+	integration-test permissions build-android-debug build-ios-simulator build-ios-release \
 	authorship commitlint commitlint-message commitlint-title
 
 help: ## List the targets
@@ -28,7 +29,7 @@ setup: ## Install the git hooks in this clone
 
 check: lint licenses test ## Fast checks, run before every commit
 
-ci: check coverage authorship commitlint ## Everything CI runs on every pull request, except the builds
+ci: check coverage permissions authorship commitlint ## Everything CI runs on every pull request, except the builds
 
 lint: format-check analyze ## Lint Dart, workflows, YAML, Markdown and shell scripts
 	actionlint
@@ -61,6 +62,13 @@ test-flutter: ## Run the unit and widget tests, with coverage
 
 coverage: test-flutter ## Gate the coverage of the domain and data layers
 	tool/check-coverage.sh coverage/lcov.info $(COVERAGE_MIN)
+
+permissions: build-android-debug ## Check the merged manifests and Info.plist against tool/permissions.allowed
+	cd android && ./gradlew --quiet :app:processReleaseMainManifest
+	tool/check-permissions.sh \
+		$(MERGED_MANIFESTS)/debug/processDebugMainManifest/AndroidManifest.xml \
+		$(MERGED_MANIFESTS)/release/processReleaseMainManifest/AndroidManifest.xml \
+		ios/Runner/Info.plist
 
 integration-test: ## Run the integration tests on a device or emulator (DEVICE=id)
 	$(FLUTTER) test integration_test $(if $(DEVICE),-d $(DEVICE))
