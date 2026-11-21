@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Direct dependencies allowed in pubspec.yaml (dependencies, dev_dependencies
+# and dependency_overrides), checked by tool/check-dependencies.sh.
+# Only the packages of the stack table in docs/SPEC.md ("Architecture and
+# stack") and their required companions belong here. Adding a line needs a
+# pull request that says why, and the package must have no telemetry and no
+# networking of its own (CLAUDE.md, "Privacy by construction").
+#
+# One package per line, a comment after it says where it comes from.
+
+# Framework
+flutter                     # SDK
+material_ui                 # Flutter's Material library, a package outside the SDK, used by flutter create
+flutter_localizations       # SDK, i18n: ARB + gen-l10n
+intl                        # i18n: ARB + gen-l10n
+
+# State
+flutter_riverpod            # State: Riverpod with code generation
+riverpod_annotation         # State: Riverpod with code generation
+riverpod_generator          # State: Riverpod with code generation (generator)
+
+# Navigation
+go_router                   # Navigation: go_router
+go_router_builder           # Navigation: typed routes (generator)
+
+# Models
+freezed                     # Models: freezed (generator)
+freezed_annotation          # Models: freezed
+json_serializable           # Models: json_serializable (generator)
+json_annotation             # Models: json_serializable
+
+# Database
+drift                       # Database: Drift
+drift_dev                   # Database: Drift (generator and schema tools)
+sqlite3                     # Database: sqlite3 with SQLite3MultipleCiphers
+
+# Platform services
+flutter_secure_storage      # Key storage: Keychain and Keystore
+cryptography                # Cryptography: Argon2id, AES-GCM, Ed25519, SHA-256
+fl_chart                    # Stats charts
+flutter_local_notifications # Notifications
+timezone                    # Notifications: time zones
+home_widget                 # Widgets: App Group and SharedPreferences
+file_picker                 # Files: import
+share_plus                  # Files: export through the system sheet
+
+# Tooling and tests
+build_runner                # Code generation runner
+very_good_analysis          # Strict lints
+flutter_test                # SDK, unit and widget tests
+integration_test            # SDK, integration tests
+patrol                      # E2E tests with native dialogs

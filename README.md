@@ -20,11 +20,17 @@ It lets an adult who uses psychoactive substances log ingestions, understand dur
 
 ## Development
 
+Flutter is pinned in `.fvmrc`: install [fvm](https://fvm.app) and run `fvm install` once.
+
 ```sh
-make setup   # install the git hooks, once per clone
-make check   # before every commit
-make ci      # before opening a pull request
+make setup             # install the git hooks, once per clone
+make check             # format, analyze, tests: before every commit
+make ci                # plus coverage and the permission check: before opening a pull request
+fvm flutter run        # run the app on a connected device or emulator
+make integration-test  # integration tests on a running device or emulator
 ```
+
+iOS builds need macOS with Xcode. `make help` lists every target.
 
 See [CONTRIBUTING](https://github.com/Zadrya/.github/blob/main/CONTRIBUTING.md) and the [security policy](https://github.com/Zadrya/.github/blob/main/SECURITY.md).
 

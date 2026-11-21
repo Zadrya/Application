@@ -37,3 +37,15 @@ jobs:
             CC-BY-4.0, CC-BY-SA-4.0, GPL-3.0-only, GPL-3.0-or-later, ISC,
             LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, MIT, MIT-0, MPL-2.0,
             OFL-1.1, PSF-2.0, Python-2.0, Unicode-3.0, Unlicense, Zlib
+          # Application only: pub packages whose license GitHub reports as an
+          # invalid SPDX id (lowercase) or not at all. Each license was checked
+          # by hand in the package's LICENSE file, see
+          # docs/adr/0005-app-allowlists-and-flutter-install-in-ci.md. The action
+          # matches these by name only (it ignores versions), so a version bump
+          # of any of them must check its LICENSE again.
+          allow-dependencies-licenses: >-
+            pkg:pub/clock, pkg:pub/cupertino_ui, pkg:pub/fake_async,
+            pkg:pub/listen, pkg:pub/matcher, pkg:pub/material_color_utilities,
+            pkg:pub/material_ui, pkg:pub/platform, pkg:pub/process,
+            pkg:pub/stack_trace, pkg:pub/test_api, pkg:pub/vector_math,
+            pkg:pub/vm_service, pkg:pub/web, pkg:pub/webdriver
