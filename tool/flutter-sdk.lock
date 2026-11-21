@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Flutter SDK archives that tool/install-flutter.sh may install in CI, with
+# their SHA-256 from
+# https://storage.googleapis.com/flutter_infra_release/releases/releases_<os>.json
+# When .fvmrc changes, add the new version's lines here in the same commit.
+#
+# version os arch archive sha256
+3.50.0 linux x64 stable/linux/flutter_linux_3.50.0-stable.tar.xz 6ea2d806fd57269ae783e6788e2a81fc26eaad782f1e0d0ff38623bb765ff9f5
+3.50.0 macos x64 stable/macos/flutter_macos_3.50.0-stable.zip d4e1bf2e2fc0c2e92267f45660c16a7d805e84ad42cb40b64b466446bffe48e0
+3.50.0 macos arm64 stable/macos/flutter_macos_arm64_3.50.0-stable.zip ed2d08a3e3c023e84cbe9316d21bd88fda6ee9552f90c1eb4da41a07c170fb35
