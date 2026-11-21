@@ -2,14 +2,45 @@
 # Weekly and grouped, no automerge. Dependabot pull requests fail the authorship
 # check by design and are re-committed by the owner, see
 # https://github.com/Zadrya/Application/blob/main/docs/adr/0002-dependabot-and-authorship.md
+# A seven-day cooldown keeps a freshly published (possibly compromised)
+# release out until it has been public for a week.
+# No swift entry yet: the repository has no Package.swift or Package.resolved
+# (Flutter generates its Swift package under ios/Flutter/ephemeral, ignored).
+# Add one with the first native Swift package.
 version: 2
 updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
     commit-message:
       prefix: chore(deps)
     groups:
       github-actions:
+        patterns: ["*"]
+
+  - package-ecosystem: pub
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: chore(deps)
+    groups:
+      pub:
+        patterns: ["*"]
+
+  - package-ecosystem: gradle
+    directory: /android
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: chore(deps)
+    groups:
+      gradle:
         patterns: ["*"]
