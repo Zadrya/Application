@@ -51,7 +51,7 @@ Subagents live in `.claude/agents/`: `app-core`, `native-ios`, `native-android`,
 - The CI job names are `lint`, `test` (required checks), `android-build`, `ios-build`, `integration-android` and `integration-ios`.
 - There is no local Xcode: iOS builds and tests run only on GitHub macOS runners (see `docs/adr/0003-ios-verified-in-ci-only.md`).
 - Actions must be pinned by full commit SHA: the organization enforces it and unpinned workflows do not start.
-- The shared scripts in `scripts/` and the base workflows are duplicated in all four Zadrya repositories on purpose, so that each repository can run `make ci` on its own. When you change one, change it in all four.
+- The shared scripts in `scripts/` and the base workflows are duplicated in all four Zadrya repositories on purpose, so that each repository can run `make ci` on its own. When you change one, change it in all four. One intentional exception: `.github/workflows/licenses.yml` in Application has an `allow-dependencies-licenses` list of pub packages whose license metadata GitHub gets wrong (ADR 0005). The other three repositories have no pub dependencies, so their copies stay without it; keep the rest of the file in sync.
 - The `authorship` and `commitlint` checks run the scripts from the pull request head, so a pull request that edits `scripts/check-*.sh`, the `Makefile` or those workflows validates itself: review such diffs with extra care.
 - Tool versions are pinned in `scripts/install-ci-tools.sh` and the `Makefile`, and Dependabot does not track them: bump them by hand.
 - Dependency review (license allowlist in `.github/workflows/licenses.yml`) only runs in CI, so `make ci` cannot tell you that a new dependency has a license outside the list.
