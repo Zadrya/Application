@@ -116,6 +116,37 @@ plist "$dir/camera.plist" NSCameraUsageDescription
 expect "permissions: an added Info.plist privacy key fails" 1 "$dir" "$permissions" debug.xml release.xml camera.plist
 expect "permissions: a missing manifest is an error" 2 "$dir" "$permissions" missing.xml release.xml Info.plist
 
+# --- check-dependencies.sh ---------------------------------------------------
+
+dependencies="$tool_dir/check-dependencies.sh"
+
+dir="$(fresh dependencies)"
+mkdir -p "$dir/tool"
+cp "$tool_dir/dependencies.allowed" "$dir/tool/"
+cat >"$dir/pubspec.yaml" <<'YAML'
+name: zadrya
+environment:
+  sdk: ^3.14.0
+dependencies:
+  flutter:
+    sdk: flutter
+  go_router: ^17.0.0 # a comment
+  drift:
+    version: ^2.0.0
+dev_dependencies:
+  build_runner: ^2.0.0
+flutter:
+  uses-material-design: true
+YAML
+expect "dependencies: allowed packages pass, nested keys ignored" 0 "$dir" "$dependencies"
+{ cat "$dir/pubspec.yaml"; printf 'dependencies:\n  http: ^1.0.0\n'; } >"$dir/http.yaml"
+expect "dependencies: a package outside the allowlist fails" 1 "$dir" "$dependencies" http.yaml
+printf 'dev_dependencies:\n  mocktail: ^1.0.0\n' >"$dir/dev.yaml"
+expect "dependencies: a dev dependency outside the allowlist fails" 1 "$dir" "$dependencies" dev.yaml
+printf 'dependencies:\n    flutter:\n        sdk: flutter\ndependency_overrides:\n    firebase_core: any\n' >"$dir/overrides.yaml"
+expect "dependencies: an override outside the allowlist fails, any indentation" 1 "$dir" "$dependencies" overrides.yaml
+expect "dependencies: a missing pubspec is an error" 2 "$dir" "$dependencies" missing.yaml
+
 if ((failures > 0)); then
   echo "$failures tool test(s) failed"
   exit 1

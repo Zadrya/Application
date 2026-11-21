@@ -17,7 +17,7 @@ DEVICE ?=
 MERGED_MANIFESTS := build/app/intermediates/merged_manifest
 COMMITLINT := npx --yes --package @commitlint/cli@21.2.4 -- commitlint
 
-.PHONY: help setup check ci lint format-check analyze licenses test test-scripts test-flutter coverage \
+.PHONY: help setup check ci lint format-check analyze dependencies licenses test test-scripts test-flutter coverage \
 	integration-test permissions build-android-debug build-ios-simulator build-ios-release \
 	authorship commitlint commitlint-message commitlint-title
 
@@ -31,7 +31,7 @@ check: lint licenses test ## Fast checks, run before every commit
 
 ci: check coverage permissions authorship commitlint ## Everything CI runs on every pull request, except the builds
 
-lint: format-check analyze ## Lint Dart, workflows, YAML, Markdown and shell scripts
+lint: format-check analyze dependencies ## Lint Dart, the dependency allowlist, workflows, YAML, Markdown and shell scripts
 	actionlint
 	zizmor --no-progress .github/workflows
 	yamllint --strict .
@@ -45,6 +45,9 @@ format-check: ## Check that the Dart code is formatted
 analyze: ## Analyze the Dart code with the strict lints
 	$(FLUTTER) pub get --enforce-lockfile
 	$(FLUTTER) analyze --fatal-infos --fatal-warnings
+
+dependencies: ## Check the direct dependencies against tool/dependencies.allowed
+	tool/check-dependencies.sh pubspec.yaml tool/dependencies.allowed
 
 licenses: ## Check that every file has license information (REUSE)
 	reuse lint
